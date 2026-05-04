@@ -17,16 +17,7 @@ namespace UIN.Library.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            var app = builder.Build();
-
-            // 🔹 Configurer le pipeline HTTP
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
-            var key = Encoding.UTF8.GetBytes("SUPER_SECRET_KEY_123456");
+            var key = Encoding.UTF8.GetBytes("SUPER_SECRET_KEY_12345678901234567890");
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -40,6 +31,15 @@ namespace UIN.Library.Api
                         IssuerSigningKey = new SymmetricSecurityKey(key)
                     };
                 });
+
+            var app = builder.Build();
+
+            // 🔹 Configurer le pipeline HTTP
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
 
             app.UseHttpsRedirection();
 

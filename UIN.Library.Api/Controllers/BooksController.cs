@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UIN.Library.Api.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace UIN.Library.Api.Controllers
-{
+{   
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class BooksController : ControllerBase
     {
         private static List<Livre> livres = new List<Livre>();

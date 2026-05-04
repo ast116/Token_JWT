@@ -7,7 +7,7 @@ namespace UIN.Library.Api.Auth
 {
     public class JwtService
     {
-        private readonly string key = "SUPER_SECRET_KEY_123456";
+        private readonly string key = "SUPER_SECRET_KEY_12345678901234567890";
 
         public string GenerateToken(string username, string role)
         {
