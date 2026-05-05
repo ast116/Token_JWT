@@ -11,10 +11,10 @@ namespace UIN.Library.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // 🔹 Ajouter les services
+            // Ajouter les services
             builder.Services.AddControllers();
 
-            // 🔹 Ajouter Swagger
+            // Ajouter Swagger
             builder.Services.AddEndpointsApiExplorer();
 
             builder.Services.AddSwaggerGen();
@@ -32,14 +32,14 @@ namespace UIN.Library.Api
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(key),
 
-                        ClockSkew = TimeSpan.Zero // TRÈS IMPORTANT
+                        ClockSkew = TimeSpan.Zero 
 
                     };
                 });
 
             var app = builder.Build();
 
-            // 🔹 Configurer le pipeline HTTP
+            // 🔹 Configuration pipeline HTTP
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -48,7 +48,7 @@ namespace UIN.Library.Api
 
             app.UseHttpsRedirection();
 
-            app.UseAuthentication(); // 🔥 IMPORTANT
+            app.UseAuthentication(); // Pour Authentification des requetes
 
             app.UseAuthorization();
 
