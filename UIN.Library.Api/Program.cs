@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 using System.Text;
 
 namespace UIN.Library.Api
@@ -15,6 +16,7 @@ namespace UIN.Library.Api
 
             // 🔹 Ajouter Swagger
             builder.Services.AddEndpointsApiExplorer();
+
             builder.Services.AddSwaggerGen();
 
             var key = Encoding.UTF8.GetBytes("SUPER_SECRET_KEY_12345678901234567890");
