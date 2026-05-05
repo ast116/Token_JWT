@@ -37,5 +37,14 @@ namespace UIN.Library.WPF
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private async void Logout_Click(object sender, RoutedEventArgs e)
+        {
+            await _api.Logout();
+
+            MessageBox.Show("Déconnecté !");
+
+            BooksList.ItemsSource = null;
+        }
     }
 }

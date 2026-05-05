@@ -39,20 +39,53 @@ namespace UIN.Library.WPF.Services
 
             var response = await _httpClient.GetAsync("api/books");
 
-            // 🔥 LOG pour debug
-            Console.WriteLine($"Status code: {response.StatusCode}");
-
+            // Si token expiré
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
-                throw new Exception("Token expiré !");
+                var refreshed = await RefreshAccessToken();
+
+                if (!refreshed)
+                    throw new Exception("Session expirée, reconnectez-vous");
+
+                // Rejouer la requête avec nouveau token
+                _httpClient.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AccessToken);
+
+                response = await _httpClient.GetAsync("api/books");
             }
 
             if (!response.IsSuccessStatusCode)
-            {
                 throw new Exception("Erreur API");
-            }
 
             return await response.Content.ReadFromJsonAsync<List<Livre>>();
+        }
+
+        public async Task<bool> RefreshAccessToken()
+        {
+            var response = await _httpClient.PostAsync(
+                $"api/auth/refresh?refreshToken={RefreshToken}", null);
+
+            if (!response.IsSuccessStatusCode)
+                return false;
+
+            var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
+
+            AccessToken = result.accessToken;
+
+            return true;
+        }
+
+        public async Task Logout()
+        {
+            if (string.IsNullOrEmpty(RefreshToken))
+                return;
+
+            await _httpClient.PostAsync(
+                $"api/auth/logout?refreshToken={RefreshToken}", null);
+
+            // Nettoyage côté client
+            AccessToken = null;
+            RefreshToken = null;
         }
     }
 
